@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Corazon Mictlan</title>
+    <meta name="description" content="Corazón Mictlan">
+    <link rel="stylesheet" href="css corazon mictlan.css">
+</head>
+<body>
+
+<main>
+    <img src="INICIO CM/Logo principal.png" alt="" style="height: 100px; align-self: flex-start;" >
+
+    <!-- Banner superior -->
+    <div class="slider">
+        <a href="Biografia Mictlan.html"><img src="INICIO CM/banner mictlan.jpg" alt="Imagen 1" class="active"></a>
+        <a href="Biografia Juda.html"><img src="INICIO CM/banner juda .jpg" alt="Imagen 2"></a>
+        <a href="Biografia ARTCAT.html"><img src="INICIO CM/banner zoe.jpg" alt="Imagen 3"></a>
+        <button class="prev">&#10094;</button>
+        <button class="next">&#10095;</button>
+    </div>
+
+    <!-- Catálogos -->
+    <section style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 40px 20px; background-color: #f9f9f9;">
+        <a href="PROXIMAMENTE AZTLAN.html" class="caja-link">
+            <img src="INICIO CM/C.O.A.png" alt="Catalogo Aztlan">
+            <div>
+                <h3>Catalogo de obras Aztlan</h3>
+                <p>Catálogo de obras del colectivo Aztlan</p>
+            </div>
+        </a>
+        <a href="Catalogo JUDA.html" class="caja-link">
+            <img src="INICIO CM/C.O.J.png" alt="Catalogo Juda">
+            <div>
+                <h3>Catalogo de obras "El Méxicano"</h3>
+                <p>Catálogo de obras del artista Juda Sánchez</p>
+            </div>
+        </a>
+        <a href="Catalogo ZOE.html" class="caja-link">
+            <img src="INICIO CM/C.O.Z.png" alt="Catalogo ARTCAT">
+            <div>
+                <h3>Catalogo de obras "ZOTE"</h3>
+                <p>Catálogo de obras de la artista Zoe Escamilla</p>
+            </div>
+        </a>
+    </section>
+
+    <!-- Eventos Próximos -->
+    <section class="eventos-fijos">
+        <img src="EVENTOS/EVENTO 1.jpg" alt="Evento 1">
+        <img src="EVENTOS/EVENTO 2.jpg" alt="Evento 2">
+        <img src="EVENTOS/EVENTO 3.jpg" alt="Evento 3">
+    </section>
+</main>
+
+<!-- Footer -->
+<footer>
+    <h3>Contacto</h3>
+    <p>Corazón Mictlan</p>
+    <p>Teléfono: +52 246 157 7066</p>
+    <p>JSPrograment-Todos los derechos reservados</p>
+</footer>
+
+<!-- Scripts Slider -->
+<script>
+const slider = document.querySelector('.slider');
+const images = slider.querySelectorAll('a img');
+const prevBtn = slider.querySelector('.prev');
+const nextBtn = slider.querySelector('.next');
+let currentIndex = 0;
+
+function showImage(index) {
+    images.forEach((img, i) => {
+        img.classList.toggle('active', i === index);
+    });
+}
+
+prevBtn.addEventListener('click', () => {
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    showImage(currentIndex);
+});
+
+nextBtn.addEventListener('click', () => {
+    currentIndex = (currentIndex + 1) % images.length;
+    showImage(currentIndex);
+});
+</script>
+
+</body>
+</html>

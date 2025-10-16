@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Biografía Mictlan</title>
+  <link rel="stylesheet" href="css biografiaMIC.css">
+</head>
+<body>
+
+  <!-- Botón con logo -->
+  <a href="index.html" class="inicio-link">
+    <button class="classic-btn" type="button">
+      <img src="logo.png" alt="Inicio" style="height: 70px;" />
+    </button>
+  </a>
+
+  <div class="info">
+    <h1>Corazón Mictlan</h1>
+    <div class="autor-fecha">
+      <span>Corazón Mictlan</span>
+    </div>
+
+    <div class="contenido">
+      <div id="texto-bio" class="texto"></div>
+      <div class="imagen">
+        <img src="BIOGRAFIAS/Biografia Mictlan.jpg" alt="Imagen de Juda Ben-Hur Sánchez Pérez" />
+        <div class="nav-buttons">
+          <button onclick="prevPage()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+          </button>
+          <button onclick="nextPage()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botones sociales -->
+  <div class="social-buttons">
+    <!-- Instagram -->
+    <a href="https://www.instagram.com/corazon_mictlan?igsh=b2F2ZzJ1MW9wcjN2" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="instagram">
+      <button type="button">
+        <svg viewBox="0 0 16 16" fill="currentColor" height="25" width="25" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.599 2.465 2.465 0 0 1-.597-.92c-.11-.281-.24-.705-.275-1.486-.04-.843-.046-1.096-.046-3.231s.006-2.388.046-3.232c.034-.78.165-1.203.275-1.484a2.495 2.495 0 0 1 .599-.921 2.466 2.466 0 0 1 .92-.598c.28-.11.705-.24 1.485-.275.843-.04 1.096-.047 3.233-.047zM8 3.87a4.13 4.13 0 1 0 0 8.258 4.13 4.13 0 0 0 0-8.258zm0 6.796a2.67 2.67 0 1 1 0-5.339 2.67 2.67 0 0 1 0 5.34zm4.665-6.848a.967.967 0 1 1-1.935 0 .967.967 0 0 1 1.935 0z"/>
+        </svg>
+        <span>Instagram</span>
+      </button>
+    </a>
+
+    <!-- Facebook -->
+    <a href="https://www.facebook.com/share/17cqozKAcG/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="facebook">
+      <button type="button">
+        <svg viewBox="0 0 320 512" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" role="img" fill="currentColor" height="25" width="25">
+          <path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S259.88 0 225.36 0c-73.22 0-121.36 44.38-121.36 124.72v70.62H22.89V288h81.11v224h100.17V288z"></path>
+        </svg>
+        <span>Facebook</span>
+      </button>
+    </a>
+
+    <!-- TikTok -->
+    <a href="https://www.tiktok.com/@corazonmictlan" target="_blank" rel="noopener noreferrer" aria-label="TikTok" class="tiktok">
+      <button type="button">
+        <img src="CUADROS JUDA/tisto.png" alt="TikTok" />
+        <span>TikTok</span>
+      </button>
+    </a>
+
+    <!-- TikTok -->
+    <a href="https://www.youtube.com/@CorazonMictlan" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="YouTube">
+      <button type="button">
+        <img src="CUADROS JUDA/Youtube_logo.png" alt="YouTube" />
+        <span>YouTube</span>
+      </button>
+    </a>
+
+
+
+
+  </div>
+
+<script>
+  const descripciones = [
+      `<p>Somos una pareja de artistas Plasticos que estudian la carrera de artes plasticas y visuales en la Escuela de Arte de Tlaxcala (EDART) enfocados en proyectos artisticos mas recurrentemente de pintura, grabado, fotografia, dibujo, videografia y escultura.</p>
+      <p>Donde buscamos dar a conocer no solamente nuestro arte si no tambien buscar exponer y visualizar el arte nacional de artistas jovenes enfocados en distintas areas asi como ser un medio de comunicacion enfocado en la visualizacion del arte en sus distintas ramas.</p>
+      <p>Planificamos eventos culturales y sociales de manera propia y colaborativa buscando que el arte no se quede en las galerias o museos si no tambien en lugares mas recurrentes como bazares, tianguis, eventos artisticos, talleres, y apoyo social a distintos eventos.</p>`,
+
+      `<p>Hemos tenido la oportunidad de exponer en la galeria del ISSSTE con nuestro colectivo AZTLÁN y en nuestra galeria anual de curso en nuestra escuela año con año.</p>
+      <p>De igual manera tuvimos la oportunidad de organizar diversos bazares artisticos en Atlihuetzian, y Tlaxcala llegando a finalizar satisfactoriamente 4 bazares hasta el momento y participado en un puesto de venta en los eventos del Mundial de tiro con Arco, las eliminatorias de las olimpiadas del voleibol y recurrentemente en un punto de venta en el estadio Tlahuicole.</p>
+      <p>Por otro lado nuestro equipo a participado en distintos eventos culturales como el Festival intercional de Cine Tlaxcala (FICTLAX) donde elaboramos los primeros premios en barro para este evento</p>
+      <p>Y proximamente tendremos la oportunidad de realizar una actividad junto con el museo de arte de Tlaxcala con motivo de la noche de museos y el dia de muertos el dia Miercoles 29 de octubre del año en curso.</p>`,
+  ];
+
+  let paginaActual = 0;
+  const textoBio = document.getElementById("texto-bio");
+
+  function mostrarPagina(index) {
+    // Quita cualquier fade-in anterior
+    textoBio.classList.remove("fade-in");
+    // Agrega fade-out
+    textoBio.classList.add("fade-out");
+
+    setTimeout(() => {
+      // Cambia el contenido
+      textoBio.innerHTML = descripciones[index];
+      // Quita fade-out y agrega fade-in
+      textoBio.classList.remove("fade-out");
+      textoBio.classList.add("fade-in");
+    }, 600); // Duración igual al transition de CSS
+  }
+
+  function prevPage() {
+    paginaActual = (paginaActual - 1 + descripciones.length) % descripciones.length;
+    mostrarPagina(paginaActual);
+  }
+
+  function nextPage() {
+    paginaActual = (paginaActual + 1) % descripciones.length;
+    mostrarPagina(paginaActual);
+  }
+
+  // Inicializa con animación
+  mostrarPagina(paginaActual);
+</script>
+
+</body>
+</html>

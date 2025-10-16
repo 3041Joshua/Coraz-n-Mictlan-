@@ -1,0 +1,144 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f7f7f7;
+  color: #333;
+}
+
+header {
+  background: #222;
+  padding: 15px;
+}
+
+header .menu a {
+  color: #fff;
+  margin: 0 15px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+h1 {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.catalogo {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.obra {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.obra:hover {
+  transform: scale(1.05);
+}
+
+.obra img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+/* --- Solo mostrar título siempre --- */
+.obra h2 {
+  margin: 10px 0 0;
+  font-size: 1.1rem;
+  color: #222;
+}
+
+/* --- Esconder los detalles por defecto --- */
+.obra p {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  margin: 0;
+}
+
+/* --- Al pasar el mouse aparecen --- */
+.obra:hover p {
+  opacity: 1;
+  max-height: 200px;
+  margin: 5px 0;
+}
+
+/* Modal estilo Instagram */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: #fff;
+  display: flex;
+  flex-direction: row;
+  max-width: 900px;
+  width: 80%;
+  max-height: 600px;
+  height: 70%;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.modal-img {
+  flex: 1;
+  background: #fff;
+}
+
+.modal-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modal-info {
+  flex: 1;
+  padding: 20px;
+  text-align: left;
+  overflow-y: auto;
+  font-size: 1.2rem;
+}
+
+.modal-info h2 {
+  margin-top: 0;
+}
+
+.modal-info p span#modalMedidas {
+  font-size: 1.4rem;
+  line-height: 1.6;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  z-index: 2000;
+}
+
+.close:hover {
+  color: red;
+}

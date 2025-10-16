@@ -1,0 +1,119 @@
+ body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f7f7f7;
+      color: #333;
+    }
+
+    header {
+      background: #222;
+      padding: 15px;
+    }
+
+    header .menu a {
+      color: #fff;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .catalogo {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .obra {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .obra:hover {
+      transform: scale(1.05);
+    }
+
+    .obra img {
+      width: 100%;
+      height: auto;
+      border-radius: 6px;
+    }
+
+    /* Modal estilo Instagram */
+    /* Modal */
+    .modal {
+      display: none;
+      /* <-- así empieza oculto */
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      align-items: center;
+      justify-content: center;
+    }
+
+
+.modal-content {
+  background: #fff;
+  display: flex;
+  flex-direction: row;
+  max-width: 900px;   /* ancho máximo del modal */
+  width: 80%;         /* relativo a la pantalla */
+  max-height: 600px;  /* alto máximo */
+  height: 70%;        /* relativo a la pantalla */
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+
+.modal-img {
+  flex: 1;
+  background: #fff;
+}
+
+.modal-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* llena el espacio sin franjas */
+}
+
+
+
+    .modal-info {
+      flex: 1;
+      padding: 20px;
+      text-align: left;
+      overflow-y: auto;
+    }
+
+    .modal-info h2 {
+      margin-top: 0;
+    }
+
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 22px;
+      font-weight: bold;
+      color: #333;
+      cursor: pointer;
+      z-index: 2000;
+    }
+
+    .close:hover {
+      color: red;
+    }

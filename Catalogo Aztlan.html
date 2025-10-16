@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Catalogo AZTLÁN</title>
+  <link rel="stylesheet" href="css catalogoAZTLAN.css">
+</head>
+
+<body>
+
+  <header>
+    <div class="menu">
+      <a href="index.html">Inicio</a>
+      <a href="Biografia Mictlan.html">Sobre Mi</a>
+    </div>
+  </header>
+
+  <h1>AZTLÁN</h1>
+
+  <div class="catalogo">
+    <div class="obra" data-titulo="Nuestras Raices" data-medidas="60 x 48 cm" data-estado="Disponible"
+      data-img="CUADROS AZTLAN/1.jpg">
+      <img src="CUADROS AZTLAN/1.jpg" alt="Nuestras Raices">
+      <h2>Cita de noche</h2>
+      <p>Pastel sobre papel</p>
+      <p>70 cm de radio</p>
+      <p>Disponible</p>
+      <p>2024</p>
+      <p>$2000</p>
+    </div>
+    <div class="obra" data-titulo="Veo un Dios en ti" data-medidas="50 x 40 cm" data-estado="Disponible"
+      data-img="CUADROS AZTLAN/2.jpg">
+      <img src="CUADROS AZTLAN/2.jpg" alt="">
+      <h2></h2>
+      <h2>Veo un Dios en ti</h2>
+      <p>Acrilico sobre lienzo</p>
+      <p>70 cm de radio</p>
+      <p>Disponible</p>
+      <p>2025</p>
+      <p>$2500</p>
+    </div>
+    <div class="obra" data-titulo="Abstracto en Azul" data-medidas="55 x 45 cm" data-estado="Disponible"
+      data-img="CUADROS AZTLAN/3.jpg">
+      <img src="CUADROS AZTLAN/3.jpg" alt="">
+      <h2>Sol y Luna</h2>
+      <p>Grabado en Madera\Xilografia</p>
+      <p>65 cm de radio</p>
+      <p>Disponible</p>
+      <p>2025</p>
+      <p>$1500</p>
+    </div>
+    <div class="obra" data-titulo="Bosque en Otoño" data-medidas="50 x 40 cm" data-estado="Disponible"
+      data-img="obra 4.jpg">
+      <img src="obra 4.jpg" alt="Bosque en Otoño">
+      <h2>Copita de bino</h2>
+      <p>Temple sobre Madera</p>
+      <p>30 x 30 cm</p>
+      <p>Disponible</p>
+      <p>2024</p>
+      <p>$800</p>
+    </div>
+    <div class="obra" data-titulo="Composición Geométrica" data-medidas="60 x 50 cm" data-estado="Disponible"
+      data-img="obra 5.jpg">
+      <img src="obra 5.jpg" alt="Composición Geométrica">
+      <h2>Rio del Mictlan</h2>
+      <p>Acrilico sobre Madera</p>
+      <p>50 x 40 cm</p>
+      <p>Disponible</p>
+      <p>2024</p>
+      <p>$700</p>
+    </div>
+    <div class="obra" data-titulo="Flores Amarillas" data-medidas="45 x 55 cm" data-estado="Disponible"
+      data-img="obra 6.jpg">
+      <img src="obra 6.jpg" alt="Flores Amarillas">
+      <h2>El regreso</h2>
+      <p>Grabado en Madera\Xilografia</p>
+      <p>100 x 70 cm</p>
+      <p>Disponible</p>
+      <p>2025</p>
+      <p>$2000</p>
+    </div>
+    <div class="obra" data-titulo="Flores Amarillas" data-medidas="45 x 55 cm" data-estado="Disponible"
+      data-img="obra 7.jpg">
+      <img src="obra 7.jpg" alt="Flores Amarillas">
+      <h2>Flores Amarillas</h2>
+      <p>45 x 55 cm</p>
+      <p>Disponible</p>
+    </div>
+    <div class="obra" data-titulo="Flores Amarillas" data-medidas="45 x 55 cm" data-estado="Disponible"
+      data-img="obra 8.jpg">
+      <img src="obra 8.jpg" alt="Flores Amarillas">
+      <h2>Flores Amarillas</h2>
+      <p>45 x 55 cm</p>
+      <p>Disponible</p>
+    </div>
+    <div class="obra" data-titulo="Flores Amarillas" data-medidas="45 x 55 cm" data-estado="Disponible"
+      data-img="obra 9.jpg">
+      <img src="obra 9.jpg" alt="Flores Amarillas">
+      <h2>Flores Amarillas</h2>
+      <p>45 x 55 cm</p>
+      <p>Disponible</p>
+    </div>
+    <div class="obra" data-titulo="Flores Amarillas" data-medidas="45 x 55 cm" data-estado="Disponible"
+      data-img="obra 10.jpg">
+      <img src="obra 10.jpg" alt="Flores Amarillas">
+      <h2>Flores Amarillas</h2>
+      <p>45 x 55 cm</p>
+      <p>Disponible</p>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="miModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <div class="modal-img">
+        <img id="modalImg" src="" alt="">
+      </div>
+      <div class="modal-info">
+        <h2 id="modalTitulo"></h2>
+        <p><strong>Medidas:</strong> <span id="modalMedidas"></span></p>
+        <p><strong>Estado:</strong> <span id="modalEstado"></span></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById("miModal");
+    const modalImg = document.getElementById("modalImg");
+    const modalTitulo = document.getElementById("modalTitulo");
+    const modalMedidas = document.getElementById("modalMedidas");
+    const modalEstado = document.getElementById("modalEstado");
+    const span = document.getElementsByClassName("close")[0];
+
+    document.querySelectorAll(".obra").forEach(obra => {
+      obra.addEventListener("click", () => {
+        modal.style.display = "flex";
+        modalImg.src = obra.dataset.img;
+        modalTitulo.textContent = obra.dataset.titulo;
+        modalMedidas.textContent = obra.dataset.medidas;
+        modalEstado.textContent = obra.dataset.estado;
+      });
+    });
+
+    span.onclick = function () {
+      modal.style.display = "none";
+    }
+
+    window.onclick = function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+  </script>
+
+</body>
+
+</html>
