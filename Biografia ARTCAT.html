@@ -15,15 +15,15 @@
   </a>
 
   <div class="info">
-    <h1>Melanie Zoe Cisneros Escamilla</h1>
+    <h1 id="bioNombre"></h1>
     <div class="autor-fecha">
-      <span>Corazón Mictlan</span>
+      <span id="bioSubtitulo">Corazón Mictlan</span>
     </div>
 
     <div class="contenido">
       <div id="texto-bio" class="texto"></div>
       <div class="imagen">
-        <img src="BIOGRAFIAS/biografia zoe.png" alt="ZOE" />
+        <img id="bioImagen" src="" alt="ZOE" />
         <div class="nav-buttons">
           <button onclick="prevPage()">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
@@ -68,46 +68,10 @@
   </div>
 
 <script>
-  const descripciones = [
-    `<p>Las emociones, sentimientos, gatos cuervos y traumas en la vida, es parte de mis intereses como artista para mostrar como se reflejan en cada persona y en mi</p>
-     <p>por lo general hago en tecnicas como pintura, tanto acuarela, temple y acrilico. Actualmene tambien eh estado trabajando con el tema del duelo, la muerte y religion</p>
-     <p>pues estos temas tienen cosas en comun y trabajarlas es mi forma de transmitirlas para que la gente los conozca.</p>`,
-
-      `<p>Estudio en la Escuela de Artes de Tlaxcala (EDART) actualmente curso el 5TO semestre</p>
-      <p>E participado en exposiciones tanto en la escuela como fuera de ella, como en Huamantla, Apizaco y Tlaxco. De igual manera en colectivos del ISSTE e IMSS</p>
-      <p>A su vez eh participado en bazares al rededor de Tlaxcala Centro, asi como ferias tematicas y en festivales, en el festival unidos por el arte donde aprendi la tecnica de TAKU HON impartiedo por la maestra Mercedes López</p>`,
-  ];
-
-  let paginaActual = 0;
-  const textoBio = document.getElementById("texto-bio");
-
-  function mostrarPagina(index) {
-    // Quita cualquier fade-in anterior
-    textoBio.classList.remove("fade-in");
-    // Agrega fade-out
-    textoBio.classList.add("fade-out");
-
-    setTimeout(() => {
-      // Cambia el contenido
-      textoBio.innerHTML = descripciones[index];
-      // Quita fade-out y agrega fade-in
-      textoBio.classList.remove("fade-out");
-      textoBio.classList.add("fade-in");
-    }, 600); // Duración igual al transition de CSS
-  }
-
-  function prevPage() {
-    paginaActual = (paginaActual - 1 + descripciones.length) % descripciones.length;
-    mostrarPagina(paginaActual);
-  }
-
-  function nextPage() {
-    paginaActual = (paginaActual + 1) % descripciones.length;
-    mostrarPagina(paginaActual);
-  }
-
-  // Inicializa con animación
-  mostrarPagina(paginaActual);
+let paginaActual=0, descripciones=[];const textoBio=document.getElementById('texto-bio');const bioNombre=document.getElementById('bioNombre');const bioSubtitulo=document.getElementById('bioSubtitulo');const bioImagen=document.getElementById('bioImagen');
+function mostrarPagina(index){if(!descripciones.length)return;paginaActual=(index+descripciones.length)%descripciones.length;textoBio.classList.remove('fade-in');textoBio.classList.add('fade-out');setTimeout(()=>{textoBio.innerHTML=descripciones[paginaActual];textoBio.classList.remove('fade-out');textoBio.classList.add('fade-in')},600)}
+function prevPage(){mostrarPagina(paginaActual-1)}function nextPage(){mostrarPagina(paginaActual+1)}
+fetch('/.netlify/functions/admin?action=public').then(r=>r.json()).then(d=>{const b=d.bios&&d.bios.zoe;if(!b){textoBio.innerHTML='<p>Biografía no disponible.</p>';return}bioNombre.textContent=b.name||'';bioSubtitulo.textContent=b.subtitle||'Corazón Mictlan';bioImagen.src=b.image||'';bioImagen.alt=b.name||'';descripciones=Array.isArray(b.pages)?b.pages:[];mostrarPagina(0)}).catch(()=>{});
 </script>
 
 </body>
