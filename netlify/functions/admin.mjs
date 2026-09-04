@@ -131,8 +131,8 @@ export default async (req) => {
       if (file && typeof file.arrayBuffer === 'function' && file.size > 0) {
         const rawExt = String(file.type || '').split('/')[1] || 'jpg';
         const ext = rawExt.toLowerCase().replace('jpeg', 'jpg').replace(/[^a-z0-9]/g, '') || 'jpg';
-        const key = `images/${type}-${id}.${ext}`;
-        await store.set(key, Buffer.from(await file.arrayBuffer()), {
+        const key = `images/${type}-${id}-${crypto.randomUUID()}.${ext}`;
+        await store.set(key, await file.arrayBuffer(), {
           metadata: { contentType: file.type || 'image/jpeg' }
         });
         item.image = `/.netlify/functions/admin?action=image&key=${encodeURIComponent(key)}`;
