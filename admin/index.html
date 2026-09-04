@@ -1,18 +1,306 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin · Corazón Mictlan</title><style>
-body{font-family:Arial,sans-serif;margin:0;background:#f4f1eb;color:#241f1b}.wrap{max-width:1100px;margin:auto;padding:30px}.panel{background:white;border-radius:18px;padding:22px;margin:18px 0;box-shadow:0 5px 25px #0001}h1{margin-top:0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}.field{margin:10px 0}.field label{display:block;font-weight:bold;margin-bottom:5px}.field input,.field textarea{width:100%;box-sizing:border-box;padding:11px;border:1px solid #ccc;border-radius:10px}.field textarea{min-height:90px}.item img{width:100%;height:180px;object-fit:cover;border-radius:12px;background:#eee}.btn{border:0;border-radius:10px;padding:11px 15px;cursor:pointer;background:#241f1b;color:white;margin:5px}.danger{background:#a33}.muted{color:#777}.hidden{display:none}#login{max-width:420px;margin:10vh auto}</style></head><body><div class="wrap">
-<div id="login" class="panel"><h1>Corazón Mictlan</h1><p>Panel de administración</p><input id="password" type="password" placeholder="Contraseña" style="width:100%;box-sizing:border-box;padding:12px"><button class="btn" onclick="login()">Entrar</button><p id="loginMsg"></p></div>
-<div id="app" class="hidden"><h1>Panel de administración</h1><button class="btn" onclick="logout()">Cerrar sesión</button><div class="panel"><h2>Eventos próximos</h2><p class="muted">Si no seleccionas una imagen al editar, se conserva la actual.</p><div id="events" class="grid"></div><button class="btn" onclick="newEvent()">+ Agregar evento</button></div><div class="panel"><h2>Cuadros de inicio</h2><div id="cards" class="grid"></div><button class="btn" onclick="newCard()">+ Agregar cuadro</button></div></div></div>
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin · Corazón Mictlan</title>
+<style>
+*{box-sizing:border-box}
+body{font-family:Arial,sans-serif;margin:0;background:#f4f1eb;color:#241f1b}
+.wrap{max-width:1180px;margin:auto;padding:30px 18px}
+.panel{background:#fff;border-radius:18px;padding:22px;margin:18px 0;box-shadow:0 5px 25px #0001}
+h1{margin:0 0 8px}.muted{color:#777}.hidden{display:none!important}
+#loginPanel{max-width:430px;margin:10vh auto}
+.field{margin:12px 0}.field label{display:block;font-weight:700;margin-bottom:6px}
+.field input,.field textarea{width:100%;padding:11px;border:1px solid #ccc;border-radius:10px;font:inherit}
+.field textarea{min-height:90px;resize:vertical}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+.item{margin:0}.item img{width:100%;height:190px;object-fit:cover;border-radius:12px;background:#eee}
+.btn{border:0;border-radius:10px;padding:11px 15px;cursor:pointer;background:#241f1b;color:#fff;margin:5px 5px 5px 0;font-weight:600}
+.btn.secondary{background:#777}.btn.danger{background:#a33}.btn:disabled{opacity:.55;cursor:not-allowed}
+.status{padding:10px 12px;border-radius:10px;background:#f0ede7;margin-top:12px;display:none}
+.status.show{display:block}.status.error{background:#f9dddd;color:#7a1111}.status.ok{background:#e1f4e5;color:#185c25}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
+.badge{display:inline-block;padding:5px 9px;border-radius:999px;background:#eee;font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section id="loginPanel" class="panel">
+    <h1>Corazón Mictlan</h1>
+    <p>Panel de administración</p>
+    <div class="field">
+      <label for="passwordInput">Contraseña</label>
+      <input id="passwordInput" type="password" autocomplete="current-password" placeholder="Escribe tu contraseña">
+    </div>
+    <button id="loginButton" class="btn" type="button">Entrar</button>
+    <div id="loginStatus" class="status"></div>
+  </section>
+
+  <main id="adminPanel" class="hidden">
+    <div class="topbar">
+      <div>
+        <h1>Panel de administración</h1>
+        <span class="badge">Corazón Mictlan</span>
+      </div>
+      <button id="logoutButton" class="btn secondary" type="button">Cerrar sesión</button>
+    </div>
+
+    <section class="panel">
+      <h2>Eventos próximos</h2>
+      <p class="muted">Puedes crear, editar, ocultar o eliminar eventos. Si al editar no eliges una nueva imagen, se conserva la actual.</p>
+      <div id="eventsGrid" class="grid"></div>
+      <button id="newEventButton" class="btn" type="button">+ Agregar evento</button>
+    </section>
+
+    <section class="panel">
+      <h2>Cuadros de inicio</h2>
+      <p class="muted">Aquí puedes crear los cuadros que después conectaremos con las secciones correspondientes de la página.</p>
+      <div id="cardsGrid" class="grid"></div>
+      <button id="newCardButton" class="btn" type="button">+ Agregar cuadro</button>
+    </section>
+  </main>
+</div>
+
 <script>
-let data={events:[],cards:[]};
-const api=(a)=>'/.netlify/functions/admin?action='+a;
-async function login(){const password=document.querySelector('#password').value;const r=await fetch(api('login'),{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({password})});const x=await r.json();if(!x.ok)return loginMsg.textContent=x.error;load();}
-async function logout(){await fetch(api('logout'),{method:'POST'});location.reload()}
-async function load(){const r=await fetch(api('public'));if(!r.ok)return;data=await r.json();login.classList.add('hidden');app.classList.remove('hidden');render();}
-function render(){events.innerHTML=data.events.map(e=>form(e,'event')).join('');cards.innerHTML=data.cards.map(c=>form(c,'card')).join('')}
-function form(x,type){return `<div class="panel item"><img src="${x.image||'../EVENTOS/Eventos Proximos .jpg'}"><div class="field"><label>Título</label><input data-k="title" value="${esc(x.title||'')}"></div><div class="field"><label>Descripción</label><textarea data-k="description">${esc(x.description||'')}</textarea></div><div class="field"><label>Fecha</label><input data-k="date" value="${esc(x.date||'')}"></div><div class="field"><label>Hora</label><input data-k="time" value="${esc(x.time||'')}"></div><div class="field"><label>Lugar</label><input data-k="place" value="${esc(x.place||'')}"></div><div class="field"><label>Enlace</label><input data-k="link" value="${esc(x.link||'')}"></div><div class="field"><label>Nueva imagen (opcional)</label><input type="file" accept="image/*" data-image></div><button class="btn" onclick="save(this,'${type}','${x.id||''}')">Guardar</button>${x.id?`<button class="btn danger" onclick="del('${type}','${x.id}')">Eliminar</button>`:''}</div>`}
-function esc(s){return String(s).replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;').replaceAll('>','&gt;')}
-function newEvent(){data.events.push({id:crypto.randomUUID()});render()}function newCard(){data.cards.push({id:crypto.randomUUID()});render()}
-async function save(btn,type,id){const box=btn.closest('.item');const obj={};box.querySelectorAll('[data-k]').forEach(i=>obj[i.dataset.k]=i.value);const f=box.querySelector('[data-image]').files[0];const fd=new FormData();fd.append('type',type);fd.append('id',id||crypto.randomUUID());fd.append('data',JSON.stringify(obj));if(f)fd.append('image',f);const r=await fetch(api('save'),{method:'POST',body:fd});const x=await r.json();if(!x.ok)return alert(x.error);data=x;render()}
-async function del(type,id){if(!confirm('¿Eliminar este elemento?'))return;const r=await fetch(api('delete'),{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({type,id})});data=await r.json();render()}
-load();
-</script></body></html>
+'use strict';
+
+const API = '/.netlify/functions/admin?action=';
+let data = { events: [], cards: [] };
+
+const loginPanel = document.getElementById('loginPanel');
+const adminPanel = document.getElementById('adminPanel');
+const passwordInput = document.getElementById('passwordInput');
+const loginButton = document.getElementById('loginButton');
+const loginStatus = document.getElementById('loginStatus');
+const logoutButton = document.getElementById('logoutButton');
+const eventsGrid = document.getElementById('eventsGrid');
+const cardsGrid = document.getElementById('cardsGrid');
+const newEventButton = document.getElementById('newEventButton');
+const newCardButton = document.getElementById('newCardButton');
+
+function api(action) { return API + encodeURIComponent(action); }
+
+function setStatus(el, message, type = '') {
+  el.textContent = message || '';
+  el.className = 'status' + (message ? ' show' : '') + (type ? ' ' + type : '');
+}
+
+function esc(value) {
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('"', '&quot;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;');
+}
+
+function escAttr(value) { return esc(value).replaceAll("'", '&#39;'); }
+
+function makeId() {
+  return crypto.randomUUID();
+}
+
+async function readJson(response) {
+  const text = await response.text();
+  let result;
+  try { result = JSON.parse(text); }
+  catch { throw new Error('El servidor devolvió una respuesta no válida.'); }
+  if (!response.ok || result.ok === false) throw new Error(result.error || `Error HTTP ${response.status}`);
+  return result;
+}
+
+async function login() {
+  const password = passwordInput.value.trim();
+  if (!password) {
+    setStatus(loginStatus, 'Escribe la contraseña.', 'error');
+    return;
+  }
+
+  loginButton.disabled = true;
+  setStatus(loginStatus, 'Entrando…');
+
+  try {
+    await readJson(await fetch(api('login'), {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ password })
+    }));
+
+    passwordInput.value = '';
+    setStatus(loginStatus, '');
+    await loadAdmin();
+  } catch (error) {
+    setStatus(loginStatus, error.message, 'error');
+  } finally {
+    loginButton.disabled = false;
+  }
+}
+
+async function logout() {
+  try { await fetch(api('logout'), { method: 'POST' }); } finally { location.reload(); }
+}
+
+async function loadAdmin() {
+  const response = await fetch(api('admin'));
+  if (response.status === 401) {
+    loginPanel.classList.remove('hidden');
+    adminPanel.classList.add('hidden');
+    return;
+  }
+
+  const result = await readJson(response);
+  data = {
+    events: Array.isArray(result.events) ? result.events : [],
+    cards: Array.isArray(result.cards) ? result.cards : []
+  };
+
+  loginPanel.classList.add('hidden');
+  adminPanel.classList.remove('hidden');
+  render();
+}
+
+function render() {
+  eventsGrid.innerHTML = data.events.map(item => renderItem(item, 'event')).join('');
+  cardsGrid.innerHTML = data.cards.map(item => renderItem(item, 'card')).join('');
+}
+
+function renderItem(item, type) {
+  const fallback = type === 'event' ? '../EVENTOS/Eventos Proximos .jpg' : '../INICIO CM/Logo principal.png';
+  const image = item.image || fallback;
+  const label = type === 'event' ? 'Evento' : 'Cuadro';
+  const active = item.active !== false;
+
+  return `
+  <article class="panel item" data-id="${escAttr(item.id || '')}" data-type="${type}">
+    <img src="${escAttr(image)}" alt="Vista previa">
+    <p class="muted"><span class="badge">${label}</span></p>
+
+    <div class="field">
+      <label>Título</label>
+      <input data-k="title" value="${escAttr(item.title)}" placeholder="Título">
+    </div>
+
+    <div class="field">
+      <label>Descripción</label>
+      <textarea data-k="description" placeholder="Descripción">${esc(item.description)}</textarea>
+    </div>
+
+    <div class="field">
+      <label>Fecha</label>
+      <input data-k="date" type="date" value="${escAttr(item.date)}">
+    </div>
+
+    <div class="field">
+      <label>Hora</label>
+      <input data-k="time" type="time" value="${escAttr(item.time)}">
+    </div>
+
+    <div class="field">
+      <label>Lugar</label>
+      <input data-k="place" value="${escAttr(item.place)}" placeholder="Lugar">
+    </div>
+
+    <div class="field">
+      <label>Enlace</label>
+      <input data-k="link" type="url" value="${escAttr(item.link)}" placeholder="https://...">
+    </div>
+
+    <div class="field">
+      <label>Nueva imagen (opcional)</label>
+      <input data-image type="file" accept="image/*">
+    </div>
+
+    <div class="field">
+      <label>
+        <input data-active type="checkbox" ${active ? 'checked' : ''}>
+        Mostrar en la página pública
+      </label>
+    </div>
+
+    <button class="btn" type="button" data-save>Guardar cambios</button>
+    ${item.id ? '<button class="btn danger" type="button" data-delete>Eliminar</button>' : ''}
+    <div class="status" data-status></div>
+  </article>`;
+}
+
+function addItem(type) {
+  const item = { id: makeId(), title: '', description: '', date: '', time: '', place: '', link: '', image: '', active: true };
+  if (type === 'event') data.events.push(item); else data.cards.push(item);
+  render();
+  const grid = type === 'event' ? eventsGrid : cardsGrid;
+  const last = grid.lastElementChild;
+  if (last) last.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+async function saveItem(button) {
+  const box = button.closest('.item');
+  const type = box.dataset.type;
+  const id = box.dataset.id || makeId();
+  const status = box.querySelector('[data-status]');
+
+  const item = {};
+  box.querySelectorAll('[data-k]').forEach(input => { item[input.dataset.k] = input.value; });
+  item.active = box.querySelector('[data-active]').checked;
+
+  const fileInput = box.querySelector('[data-image]');
+  const file = fileInput.files && fileInput.files[0];
+  const form = new FormData();
+  form.append('type', type);
+  form.append('id', id);
+  form.append('data', JSON.stringify(item));
+  if (file) form.append('image', file);
+
+  button.disabled = true;
+  setStatus(status, 'Guardando…');
+
+  try {
+    const result = await readJson(await fetch(api('save'), { method: 'POST', body: form }));
+    data = { events: result.events || [], cards: result.cards || [] };
+    render();
+  } catch (error) {
+    setStatus(status, error.message, 'error');
+    button.disabled = false;
+  }
+}
+
+async function deleteItem(button) {
+  const box = button.closest('.item');
+  const type = box.dataset.type;
+  const id = box.dataset.id;
+  if (!id) return;
+  if (!confirm('¿Eliminar este elemento? Esta acción no se puede deshacer.')) return;
+
+  button.disabled = true;
+  try {
+    const result = await readJson(await fetch(api('delete'), {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ type, id })
+    }));
+    data = { events: result.events || [], cards: result.cards || [] };
+    render();
+  } catch (error) {
+    alert(error.message);
+    button.disabled = false;
+  }
+}
+
+loginButton.addEventListener('click', login);
+passwordInput.addEventListener('keydown', event => { if (event.key === 'Enter') login(); });
+logoutButton.addEventListener('click', logout);
+newEventButton.addEventListener('click', () => addItem('event'));
+newCardButton.addEventListener('click', () => addItem('card'));
+
+document.addEventListener('click', event => {
+  const save = event.target.closest('[data-save]');
+  if (save) saveItem(save);
+  const del = event.target.closest('[data-delete]');
+  if (del) deleteItem(del);
+});
+
+loadAdmin().catch(error => {
+  setStatus(loginStatus, error.message, 'error');
+});
+</script>
+</body>
+</html>
