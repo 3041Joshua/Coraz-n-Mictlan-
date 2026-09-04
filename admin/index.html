@@ -232,6 +232,43 @@ function addItem(type) {
   if (last) last.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
+async function compressImage(file, maxBytes = 3.5 * 1024 * 1024) {
+  if (!file) return null;
+  if (!file.type.startsWith('image/')) throw new Error('El archivo seleccionado no es una imagen.');
+
+  // Las Netlify Functions tienen un límite de payload de 6 MB y las cargas
+  // binarias pueden tener ~30% de sobrecarga en el transporte. Dejamos
+  // bastante margen comprimiendo desde el navegador antes de enviar.
+  if (file.size <= maxBytes && file.type === 'image/jpeg') return file;
+
+  const bitmap = await createImageBitmap(file);
+  let width = bitmap.width;
+  let height = bitmap.height;
+  const maxDimension = 1800;
+  if (Math.max(width, height) > maxDimension) {
+    const scale = maxDimension / Math.max(width, height);
+    width = Math.round(width * scale);
+    height = Math.round(height * scale);
+  }
+
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext('2d', { alpha: false });
+  ctx.drawImage(bitmap, 0, 0, width, height);
+  bitmap.close();
+
+  let quality = 0.82;
+  let blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', quality));
+  while (blob && blob.size > maxBytes && quality > 0.45) {
+    quality -= 0.07;
+    blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', quality));
+  }
+
+  if (!blob) throw new Error('No se pudo preparar la imagen.');
+  return new File([blob], (file.name.replace(/\.[^.]+$/, '') || 'imagen') + '.jpg', { type: 'image/jpeg' });
+}
+
 async function saveItem(button) {
   const box = button.closest('.item');
   const type = box.dataset.type;
@@ -243,17 +280,23 @@ async function saveItem(button) {
   item.active = box.querySelector('[data-active]').checked;
 
   const fileInput = box.querySelector('[data-image]');
-  const file = fileInput.files && fileInput.files[0];
-  const form = new FormData();
-  form.append('type', type);
-  form.append('id', id);
-  form.append('data', JSON.stringify(item));
-  if (file) form.append('image', file);
+  const originalFile = fileInput.files && fileInput.files[0];
 
   button.disabled = true;
-  setStatus(status, 'Guardando…');
+  setStatus(status, originalFile ? 'Preparando y comprimiendo imagen…' : 'Guardando…');
 
   try {
+    const file = originalFile ? await compressImage(originalFile) : null;
+    if (file && originalFile && file.size < originalFile.size) {
+      setStatus(status, `Imagen optimizada: ${(originalFile.size / 1024 / 1024).toFixed(1)} MB → ${(file.size / 1024 / 1024).toFixed(1)} MB. Guardando…`);
+    }
+
+    const form = new FormData();
+    form.append('type', type);
+    form.append('id', id);
+    form.append('data', JSON.stringify(item));
+    if (file) form.append('image', file);
+
     const result = await readJson(await fetch(api('save'), { method: 'POST', body: form }));
     data = { events: result.events || [], cards: result.cards || [] };
     render();
