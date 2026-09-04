@@ -40,11 +40,7 @@
     </section>
 
     <!-- Eventos Próximos -->
-    <section class="eventos-fijos">
-        <img src="EVENTOS/Eventos Proximos .jpg" alt="Evento 1">
-        <img src="EVENTOS/Eventos Proximos .jpg" alt="Evento 2">
-        <img src="EVENTOS/Eventos Proximos .jpg" alt="Evento 3">
-    </section>
+    <section class="eventos-fijos" id="eventos-dinamicos"></section>
 </main>
 
 <!-- Footer -->
@@ -80,5 +76,18 @@ nextBtn.addEventListener('click', () => {
 });
 </script>
 
+
+<script>
+async function cargarEventos(){
+ try{
+  const r=await fetch('/.netlify/functions/admin?action=public');
+  const data=await r.json();
+  const cont=document.getElementById('eventos-dinamicos');
+  const eventos=(data.events||[]).filter(e=>e.active!==false);
+  cont.innerHTML=eventos.length?eventos.map(e=>`<article class="evento-card"><img src="${e.image||'EVENTOS/Eventos Proximos .jpg'}" alt="${e.title||'Evento'}"><div><h3>${e.title||''}</h3><p>${e.description||''}</p>${e.date?`<p><strong>Fecha:</strong> ${e.date}</p>`:''}${e.time?`<p><strong>Hora:</strong> ${e.time}</p>`:''}${e.place?`<p><strong>Lugar:</strong> ${e.place}</p>`:''}${e.link?`<a href="${e.link}" target="_blank" rel="noopener">Más información</a>`:''}</div></article>`).join(''):`<img src="EVENTOS/Eventos Proximos .jpg" alt="Próximos eventos">`;
+ }catch(e){}
+}
+cargarEventos();
+</script>
 </body>
 </html>
